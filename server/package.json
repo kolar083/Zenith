@@ -1,0 +1,24 @@
+{
+  "name": "tandem",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/kolar083/Tandem#readme",
+  "bugs": {
+    "url": "https://github.com/kolar083/Tandem/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kolar083/Tandem.git"
+  },
+  "license": "ISC",
+  "author": "Filip-Milicevic",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}
