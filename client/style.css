@@ -382,7 +382,7 @@ nav a:hover {
   }
 }
 
-/* Mobile */
+
 @media (max-width: 768px) {
   #index-header {
     padding: 12px 4%;
@@ -453,7 +453,7 @@ nav a:hover {
   }
 }
 
-/* Small phones */
+
 @media (max-width: 480px) {
   #index-home h1 {
     font-size: 22px;
@@ -504,7 +504,7 @@ nav a:hover {
   }
 }
 
-/* Mobile */
+
 @media (max-width: 768px) {
   #login-container {
     width: 80%;
@@ -537,7 +537,7 @@ nav a:hover {
   }
 }
 
-/* Small phones */
+
 @media (max-width: 480px) {
   #login-container {
     width: 90%;
