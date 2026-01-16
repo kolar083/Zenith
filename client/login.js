@@ -18,7 +18,7 @@ if (form){
                     Password
                 })
             });
-            const data = await response.text();
+            const data = await response.json();
 
             if(response.ok){
                 localStorage.setItem('token',data.token);
