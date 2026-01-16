@@ -25,7 +25,7 @@ if (form){
                 localStorage.setItem('token',data.token);
             }
             else{
-                alert(data).message;
+                alert(data.message);
             }
         }
         catch(error){
