@@ -59,22 +59,8 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-window.onload = function() {
-  const modal = document.getElementById("myModal");
-  const span = document.getElementsByClassName("close")[0];
 
-  modal.style.display = "block";
 
-  span.onclick = function() {
-    modal.style.display = "none";
-  }
-
-  window.onclick = function(event) {
-    if (event.target == span) {
-      modal.style.display = "none";
-    }
-  }
-};
 
 document.addEventListener("DOMContentLoaded", async () => {
     const modal = document.getElementById("myModal");
@@ -118,10 +104,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     
-    // logoutBtn.addEventListener("click", () => {
-    //     localStorage.removeItem("isLoggedIn");
-    //     checkAuthAndDisplay();
-    // });
+    
 
     
     document.querySelector(".close").onclick = () => modal.style.display = "none";
