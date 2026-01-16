@@ -52,14 +52,23 @@ router.post('/login',async(req,res)=>{
             const user = results[0];
             const IsRight = await bcrypt.compare(Password, user.Password);
             if(IsRight){
-                res.status(200).send('User has logged in successfully');
+                res.status(200).json({
+                    message: 'User has logged in',
+                    username: user.Username,
+                    token: Math.random()*100
+                });
+
             }
             else{
-                res.status(401).send('Invalid credentials');
+                res.status(401).json({
+                    message: 'Invalid credentials'
+                });
             }
         }
         else{
-            res.status(404).send('User not found');
+            res.status(404).json({
+                    message: 'User not found'
+                });
         }
     });
 });

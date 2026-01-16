@@ -21,11 +21,11 @@ if (form){
             const data = await response.text();
 
             if(response.ok){
-                alert('Login successful');
-                window.location.href='index.html';
+                window.location.href='Plan.html';
+                localStorage.setItem('token',data.token);
             }
             else{
-                alert(data);
+                alert(data).message;
             }
         }
         catch(error){
