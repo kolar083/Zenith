@@ -574,7 +574,7 @@ nav a:hover {
   margin: 15% auto; 
   padding: 20px;
   border-radius: 8px;
-  width: 300px;
+  width: 20%;
   color:#CBE4DE;
 }
 
@@ -610,3 +610,14 @@ nav a:hover {
   margin-top: 15px;
   left: 12%;
 }
+
+ .error-msg {
+    color: #ff4d4d;
+    font-size: 0.8rem;
+    min-height: 1em;
+}
+
+.login-input.invalid {
+    border: 1px solid #ff4d4d;
+    background-color: #fff2f2;
+} 
