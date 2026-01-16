@@ -6,9 +6,70 @@
 <title>Mapa sportskih objekata + Vremenski Widget</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <style>
-html, body { height: 100%; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+html, body { height: 100%; margin: 0; padding: 0; font-family: Arial, sans-serif; overflow: hidden; }
 
-/* Mapa */
+#pdf-viewer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 70%;
+        height: 40vh;
+        border-top: 2px solid #ccc;
+        background: white;
+        z-index: 999;
+
+        overflow: hidden;
+      }
+
+      #index-header {
+        background-color: #2c3333;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        padding: 0 5%;
+        font-size: 23px;
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 1000;
+        width: 70%;
+        box-sizing: border-box;
+      }
+
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      nav a {
+        text-decoration: none;
+        color: #cbe4de;
+        font-weight: 500;
+        margin: 0 15px;
+        transition: color 0.3s;
+      }
+
+      nav a:hover {
+        color: #0e8388;
+      }
+
+      .nav-logo a {
+        font-size: 24px;
+        font-weight: bold;
+        color: #000;
+        margin-left: 0;
+      }
+      #nav-img {
+        height: 100px;
+        width: auto;
+      }
+
+      .nav-links-center,
+      .nav-links-right {
+        display: flex;
+        align-items: center;
+      }
+
+
 #map {
     position: absolute;
     top: 0;
@@ -16,9 +77,10 @@ html, body { height: 100%; margin: 0; padding: 0; font-family: Arial, sans-serif
     width: 30%;
     height: 60vh;
     z-index: 1000;
+    overflow: hidden;
 }
 
-/* Vremenski widget */
+
 #weather-widget {
     position: absolute;
     top: 60vh;
@@ -27,7 +89,7 @@ html, body { height: 100%; margin: 0; padding: 0; font-family: Arial, sans-serif
     height: 40vh;
     z-index: 1001;
 
-    background: linear-gradient(to bottom, #4a90e2, #357ABD);
+    background: linear-gradient(to bottom, #4a90e2, #357ABD); 
     color: white;
     padding: 15px 20px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.2);
@@ -39,7 +101,7 @@ html, body { height: 100%; margin: 0; padding: 0; font-family: Arial, sans-serif
     border-top-left-radius: 10px;
 }
 
-/* Glavni deo trenutnog vremena */
+
 #current-weather {
     display: flex;
     flex-direction: row;
@@ -55,51 +117,74 @@ html, body { height: 100%; margin: 0; padding: 0; font-family: Arial, sans-serif
     animation: float 2s infinite;
 }
 
+#location { font-weight: bold; font-size: 1.5em; }
+#datetime { font-size: 1em; font-weight: bold; margin-bottom: 10px; opacity: 0.95; }
+#current-weather img { width: 60px; height: 60px; margin-right: 10px; animation: float 2s infinite; }
 #temperature { font-size: 2em; font-weight: bold; }
 #description { text-transform: capitalize; font-size: 1em; margin: 2px 0; }
-#location { font-weight: bold; font-size: 1.8em; }
-#datetime {
-    font-size: 0.9em;      /* možeš i veći, npr. 1.4em ili 1.5em po želji */
-    font-weight: bold;
-    margin-bottom: 10px;
-    opacity: 0.9;
-}
+#minmax { font-size: 0.85em; margin-top: 3px; }
 
 #minmax { font-size: 0.85em; margin-top: 3px; }
 
-/* Forecast */
+
 #forecast {
-    margin-top: 30px;           /* spuštenije od trenutnog vremena */
+    margin-top: 30px;            
     display: flex;
-    justify-content: space-around; /* ravnomerni razmaci sa leve i desne ivice */
+    justify-content: space-around; 
     width: 100%;
 }
 
 .day {
     text-align: center;
-    font-size: 1em;             /* srednji font za dan i temperaturu */
+    font-size: 1em;              
+    color: white;                
 }
 
 .day img {
-    width: 50px;                 /* ikonice srednje veličine */
+    width: 50px;                 
     height: 50px;
     margin-bottom: 5px;
 }
 
 .day div {
-    font-size: 0.95em;           /* tekst malo veći */
+    font-size: 0.95em;           
+    color: white;                
 }
 
-/* Animacija float */
+
 @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 
-/* Night mode */
-.night { background: linear-gradient(to bottom, #1a1a2e, #2b2b44) !important; color: #f0f4f8 !important; }
-body.night { background: #121224 !important; }
+
+#weather-widget.night {
+    background: linear-gradient(to bottom, #1a1a2e, #2b2b44);
+    color: #f0f4f8;
+}
 
 </style>
 </head>
 <body>
+
+<header id="index-header">
+      <nav>
+        <div class="nav-logo">
+          <a href="#"><img src="assets/logo.png" alt="Logo" id="nav-img" /></a>
+        </div>
+
+        <div class="nav-links-center">
+          <a href="index.html#index-home">Home</a>
+          <a href="index.html#index-sport" id="sport-nav-link">Sport</a>
+          <a href="index.html#index-general">Explore</a>
+        </div>
+      </nav>
+    </header>
+    <div id="pdf-viewer">
+      <embed
+        src="./assets/pdfs/10K/10K_12_easy.pdf#toolbar=0&navpanes=0"
+        type="application/pdf"
+        width="100%"
+        height="100%"
+      />
+    </div>
 
 <div id="map"></div>
 
@@ -119,11 +204,11 @@ body.night { background: #121224 !important; }
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-// --- Leaflet mapa ---
+
 const map = L.map('map').setView([45.8,16.0],13);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19}).addTo(map);
 
-// --- Dohvat sportskih objekata ---
+
 function fetchSportsData(lat, lon){
     const query = `[out:json];(node["sport"](around:30000,${lat},${lon});way["sport"](around:30000,${lat},${lon});relation["sport"](around:30000,${lat},${lon}););out center;`;
     const url = 'https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(query);
@@ -139,8 +224,8 @@ function fetchSportsData(lat, lon){
         }).catch(err=>console.error(err));
 }
 
-// --- WeatherAPI.com ---
-const weatherApiKey = '76c3274616114882a35174718261601'; // ubaci svoj ključ
+
+const weatherApiKey = '76c3274616114882a35174718261601'; 
 
 function showWeather(data){
     const hours = new Date().getHours();
@@ -151,7 +236,7 @@ function showWeather(data){
 
     const now = new Date(data.location.localtime);
     document.getElementById('location').innerText = data.location.name;
-    document.getElementById('datetime').innerText = now.toLocaleString('sr-RS',{weekday:'short', day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'});
+    document.getElementById('datetime').innerText = now.toLocaleString('en-US',{weekday:'short', day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'});
 
     document.getElementById('temperature').innerText = Math.round(data.current.temp_c)+"°C";
     document.getElementById('description').innerText = data.current.condition.text;
@@ -159,22 +244,22 @@ function showWeather(data){
 
     document.getElementById('minmax').innerText = `Min: ${Math.round(data.forecast.forecastday[0].day.mintemp_c)}°C / Max: ${Math.round(data.forecast.forecastday[0].day.maxtemp_c)}°C`;
 
-    // 3-dnevna prognoza
+    
     const forecastDiv = document.getElementById('forecast');
     forecastDiv.innerHTML="";
     data.forecast.forecastday.forEach(day=>{
-        const dayName = new Date(day.date).toLocaleDateString('sr-RS',{weekday:'short'});
-        const icon = "https:" + day.day.condition.icon;
-        const temp = Math.round(day.day.avgtemp_c)+"°C";
-        forecastDiv.innerHTML+=`<div class="day">
-            <div>${dayName}</div>
-            <img src="${icon}">
-            <div>${temp}</div>
-        </div>`;
+    const dayName = new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' }); 
+    const icon = "https:" + day.day.condition.icon;
+    const temp = Math.round(day.day.avgtemp_c)+"°C";
+    forecastDiv.innerHTML+=`<div class="day">
+        <div>${dayName}</div>
+        <img src="${icon}">
+        <div>${temp}</div>
+    </div>`;
     });
 }
 
-// --- Fetch Weather po koordinatama ---
+
 function fetchWeather(lat, lon){
     fetch(`https://api.weatherapi.com/v1/forecast.json?key=${weatherApiKey}&q=${lat.toFixed(6)},${lon.toFixed(6)}&days=3&aqi=no&alerts=no`)
         .then(res=>res.json())
@@ -182,7 +267,7 @@ function fetchWeather(lat, lon){
         .catch(err=>console.error("Greška u vremenskom API:", err));
 }
 
-// --- Fetch Weather po gradu (fallback) ---
+
 function fetchWeatherByCity(city){
     fetch(`https://api.weatherapi.com/v1/forecast.json?key=${weatherApiKey}&q=${city}&days=3&aqi=no&alerts=no`)
         .then(res=>res.json())
@@ -190,7 +275,7 @@ function fetchWeatherByCity(city){
         .catch(err=>console.error("Greška u vremenskom API:", err));
 }
 
-// --- Geolokacija korisnika + mapa ---
+
 function locateUser(){
     if(navigator.geolocation){
         navigator.geolocation.getCurrentPosition(pos=>{
