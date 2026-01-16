@@ -1,31 +1,14 @@
 <!DOCTYPE html>
 <html lang="hr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mapa sportskih objekata</title>
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    />
-    <style>
-      html,
-      body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mapa sportskih objekata + Vremenski Widget</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+html, body { height: 100%; margin: 0; padding: 0; font-family: Arial, sans-serif; overflow: hidden; }
 
-      #map {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 30%;
-        height: 100vh;
-        z-index: 1000;
-      }
-
-      #pdf-viewer {
+#pdf-viewer {
         position: fixed;
         bottom: 0;
         left: 0;
@@ -130,7 +113,21 @@
       />
     </div>
 
-    <div id="map"></div>
+<div id="map"></div>
+
+<div id="weather-widget">
+    <div id="location">Učitavanje...</div>
+    <div id="datetime"></div>
+    <div id="current-weather">
+        <img id="icon" src="" alt="Weather Icon">
+        <div>
+            <div id="temperature"></div>
+            <div id="description"></div>
+            <div id="minmax"></div>
+        </div>
+    </div>
+    <div id="forecast"></div>
+</div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
@@ -141,76 +138,92 @@
         maxZoom: 19,
       }).addTo(map);
 
-      function fetchSportsData(lat, lon) {
-        const query = `
-                [out:json];
-                (
-                  node["sport"](around:30000,${lat},${lon});
-                  way["sport"](around:30000,${lat},${lon});
-                  relation["sport"](around:30000,${lat},${lon});
-                );
-                out center;
-            `;
-        const url =
-          "https://overpass-api.de/api/interpreter?data=" +
-          encodeURIComponent(query);
 
-        fetch(url)
-          .then((response) => response.json())
-          .then((data) => {
-            data.elements.forEach((el) => {
-              let coords;
-              if (el.type === "node") {
-                coords = [el.lat, el.lon];
-              } else if (el.type === "way" || el.type === "relation") {
-                coords = [el.center.lat, el.center.lon];
-              }
-              if (coords) {
-                L.marker(coords)
-                  .addTo(map)
-                  .bindPopup(el.tags.name || "Sportski objekt")
-                  .openPopup();
-              }
+function fetchSportsData(lat, lon){
+    const query = `[out:json];(node["sport"](around:30000,${lat},${lon});way["sport"](around:30000,${lat},${lon});relation["sport"](around:30000,${lat},${lon}););out center;`;
+    const url = 'https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(query);
+    fetch(url)
+        .then(res=>res.json())
+        .then(data=>{
+            data.elements.forEach(el=>{
+                let coords;
+                if(el.type==="node") coords=[el.lat,el.lon];
+                else if(el.type==="way"||el.type==="relation") coords=[el.center.lat,el.center.lon];
+                if(coords) L.marker(coords).addTo(map).bindPopup(el.tags.name||"Sportski objekt");
             });
-          })
-          .catch((err) =>
-            console.error("Greška pri dohvaćanju sportskih objekata:", err)
-          );
-      }
+        }).catch(err=>console.error(err));
+}
 
-      function locateUser() {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-            (position) => {
-              const lat = position.coords.latitude;
-              const lon = position.coords.longitude;
 
-              const userMarker = L.marker([lat, lon])
-                .addTo(map)
-                .bindPopup("<b>Tvoja lokacija</b>")
-                .openPopup();
+const weatherApiKey = '76c3274616114882a35174718261601'; 
 
-              map.setView([lat, lon], 12);
+function showWeather(data){
+    const hours = new Date().getHours();
+    if(hours<6||hours>18){
+        document.body.classList.add('night');
+        document.getElementById('weather-widget').classList.add('night');
+    }
 
-              L.circle([lat, lon], {
-                color: "blue",
-                fillColor: "#blue",
-                fillOpacity: 0.1,
-                radius: 30000,
-              }).addTo(map);
+    const now = new Date(data.location.localtime);
+    document.getElementById('location').innerText = data.location.name;
+    document.getElementById('datetime').innerText = now.toLocaleString('en-US',{weekday:'short', day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'});
 
-              fetchSportsData(lat, lon);
-            },
-            () => {
-              alert("Ne možemo dohvatiti tvoju lokaciju.");
-            }
-          );
-        } else {
-          alert("Geolokacija nije podržana u ovom pregledniku.");
-        }
-      }
+    document.getElementById('temperature').innerText = Math.round(data.current.temp_c)+"°C";
+    document.getElementById('description').innerText = data.current.condition.text;
+    document.getElementById('icon').src = "https:"+data.current.condition.icon;
 
-      locateUser();
-    </script>
-  </body>
+    document.getElementById('minmax').innerText = `Min: ${Math.round(data.forecast.forecastday[0].day.mintemp_c)}°C / Max: ${Math.round(data.forecast.forecastday[0].day.maxtemp_c)}°C`;
+
+    
+    const forecastDiv = document.getElementById('forecast');
+    forecastDiv.innerHTML="";
+    data.forecast.forecastday.forEach(day=>{
+    const dayName = new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' }); 
+    const icon = "https:" + day.day.condition.icon;
+    const temp = Math.round(day.day.avgtemp_c)+"°C";
+    forecastDiv.innerHTML+=`<div class="day">
+        <div>${dayName}</div>
+        <img src="${icon}">
+        <div>${temp}</div>
+    </div>`;
+    });
+}
+
+
+function fetchWeather(lat, lon){
+    fetch(`https://api.weatherapi.com/v1/forecast.json?key=${weatherApiKey}&q=${lat.toFixed(6)},${lon.toFixed(6)}&days=3&aqi=no&alerts=no`)
+        .then(res=>res.json())
+        .then(showWeather)
+        .catch(err=>console.error("Greška u vremenskom API:", err));
+}
+
+
+function fetchWeatherByCity(city){
+    fetch(`https://api.weatherapi.com/v1/forecast.json?key=${weatherApiKey}&q=${city}&days=3&aqi=no&alerts=no`)
+        .then(res=>res.json())
+        .then(showWeather)
+        .catch(err=>console.error("Greška u vremenskom API:", err));
+}
+
+
+function locateUser(){
+    if(navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(pos=>{
+            const lat=pos.coords.latitude;
+            const lon=pos.coords.longitude;
+
+            L.marker([lat,lon]).addTo(map).bindPopup("<b>Tvoja lokacija</b>").openPopup();
+            map.setView([lat,lon],12);
+            L.circle([lat,lon],{color:'blue',fillColor:'#blue',fillOpacity:0.1,radius:30000}).addTo(map);
+
+            fetchSportsData(lat,lon);
+            fetchWeather(lat,lon);
+        },()=> fetchWeatherByCity("Belgrade"));
+    }else fetchWeatherByCity("Belgrade");
+}
+
+locateUser();
+</script>
+
+</body>
 </html>
