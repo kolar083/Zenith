@@ -144,13 +144,10 @@ document.getElementById("planForm").addEventListener("submit", function(e) {
   P=((fiveK/5)+(tenK/10))/2;
   I=P*Math.sqrt(B/22)
 
-  if(I<4.5) {
+  if(I<=5.5) {
     fetch();
   }
-  else if(I>=4.5 && I<6.5) {
-    fetch();
-  }
-  else {
+  else if (I > 5.5){
     fetch();
   }
 });

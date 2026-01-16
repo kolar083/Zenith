@@ -33,26 +33,59 @@
           </form>
         </div>
         <div id="planSection" style="display: none">
-          <h2 style="margin-bottom: 10px;">Welcome to the Plan Maker</h2>
+          <h2 style="margin-bottom: 10px">Welcome to the Plan Maker</h2>
           <p>Here we will create your personalized plan.</p>
           <form id="planForm">
-            <input type="number" placeholder="Enter your 5k pb (minutes)" required  id="5k" class="login-input"/>
-            <input type="number" placeholder="Enter your 10k pb (minutes)" required  id="10k" class="login-input"/>
-            <input type="number" placeholder="Enter your weight (kg)" required  id="weight" class="login-input"/>
-            <input type="number" placeholder="Enter your height (meters)" required  id="height" class="login-input"/>
+            <input
+              type="number"
+              placeholder="Enter your 5k pb (minutes)"
+              required
+              id="5k"
+              class="login-input"
+            />
+            <input
+              type="number"
+              placeholder="Enter your 10k pb (minutes)"
+              required
+              id="10k"
+              class="login-input"
+            />
+            <input
+              type="number"
+              placeholder="Enter your weight (kg)"
+              required
+              id="weight"
+              class="login-input"
+            />
+            <input
+              type="number"
+              placeholder="Enter your height (meters)"
+              required
+              id="height"
+              class="login-input"
+            />
+            <div class="radio-group">
+              <label class="container"
+                >12 weeks
+                <input type="radio" name="weeks" value="12" />
+                <span class="checkmark"></span>
+              </label>
+              <label class="container"
+                >16 weeks
+                <input type="radio" name="weeks" value="16" />
+                <span class="checkmark"></span>
+              </label>
+              <label class="container"
+                >20 weeks
+                <input type="radio" name="weeks" value="20" />
+                <span class="checkmark"></span>
+              </label>
+            </div>
             <input type="submit" value="Create Plan" />
           </form>
           <!-- <button id="logoutBtn" style="margin-top: 10px">Logout</button> -->
         </div>
       </div>
     </div>
-
-
-      
-
-
-
-
-
   </body>
 </html>
