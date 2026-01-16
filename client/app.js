@@ -70,7 +70,7 @@ window.onload = function() {
   }
 
   window.onclick = function(event) {
-    if (event.target == modal) {
+    if (event.target == span) {
       modal.style.display = "none";
     }
   }
@@ -118,14 +118,39 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     
-    logoutBtn.addEventListener("click", () => {
-        localStorage.removeItem("isLoggedIn");
-        checkAuthAndDisplay();
-    });
+    // logoutBtn.addEventListener("click", () => {
+    //     localStorage.removeItem("isLoggedIn");
+    //     checkAuthAndDisplay();
+    // });
 
     
     document.querySelector(".close").onclick = () => modal.style.display = "none";
     
     
     checkAuthAndDisplay();
+});
+
+document.getElementById("planForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const fiveK = parseFloat(document.getElementById("5k").value);
+    const tenK = parseFloat(document.getElementById("10k").value);
+    const weight = parseFloat(document.getElementById("weight").value);
+    const height = parseFloat(document.getElementById("height").value);
+
+
+    let B,P,I;
+
+  B= weight/(height*height);
+  P=((fiveK/5)+(tenK/10))/2;
+  I=P*Math.sqrt(B/22)
+
+  if(I<4.5) {
+    fetch();
+  }
+  else if(I>=4.5 && I<6.5) {
+    fetch();
+  }
+  else {
+    fetch();
+  }
 });
