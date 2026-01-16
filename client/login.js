@@ -18,14 +18,14 @@ if (form){
                     Password
                 })
             });
-            const data = await response.text();
+            const data = await response.json();
 
             if(response.ok){
-                alert('Login successful');
-                window.location.href='index.html';
+                window.location.href='Plan.html';
+                localStorage.setItem('token',data.token);
             }
             else{
-                alert(data);
+                alert(data.message);
             }
         }
         catch(error){
