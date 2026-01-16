@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mapa sportskih objekata</title>
+    <title>Plan treninga</title>
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -14,15 +14,24 @@
         height: 100%;
         margin: 0;
         padding: 0;
+        font-family: Arial, sans-serif;
+        overflow: hidden;
+      }
+      #kalendar {
+        position: fixed;
+        top: 110px;
+        right: 85%;
+        width: 35%;
+        height: 45vh;
+        border-radius: 12px;
+        padding: 15px;
+        z-index: 1;
       }
 
-      #map {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 30%;
-        height: 100vh;
-        z-index: 1000;
+      #kalendar iframe {
+        width: 114%;
+        height: 100%;
+        border: none;
       }
 
       #pdf-viewer {
@@ -35,23 +44,222 @@
         background: white;
         z-index: 999;
 
-        overflow: hidden; 
+        overflow: hidden;
+      }
+
+      #index-header {
+        background-color: #2c3333;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        padding: 0 5%;
+        font-size: 23px;
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 1000;
+        width: 70%;
+        box-sizing: border-box;
+      }
+
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      nav a {
+        text-decoration: none;
+        color: #cbe4de;
+        font-weight: 500;
+        margin: 0 15px;
+        transition: color 0.3s;
+      }
+
+      nav a:hover {
+        color: #0e8388;
+      }
+
+      .nav-logo a {
+        font-size: 24px;
+        font-weight: bold;
+        color: #000;
+        margin-left: 0;
+      }
+      #nav-img {
+        height: 100px;
+        width: auto;
+      }
+
+      .nav-links-center,
+      .nav-links-right {
+        display: flex;
+        align-items: center;
+      }
+
+      #map {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 30%;
+        height: 60vh;
+        z-index: 1000;
+        overflow: hidden;
+      }
+
+      #weather-widget {
+        position: absolute;
+        top: 60vh;
+        right: 0;
+        width: 28%;
+        height: 40vh;
+        z-index: 1001;
+
+        background: linear-gradient(to bottom, #4a90e2, #357abd);
+        color: white;
+        padding: 15px 20px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        overflow: hidden;
+        border-top-left-radius: 10px;
+      }
+
+      #current-weather {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 10px;
+      }
+
+      #current-weather img {
+        width: 60px;
+        height: 60px;
+        margin-right: 10px;
+        animation: float 2s infinite;
+      }
+
+      #location {
+        font-weight: bold;
+        font-size: 1.5em;
+      }
+      #datetime {
+        font-size: 1em;
+        font-weight: bold;
+        margin-bottom: 10px;
+        opacity: 0.95;
+      }
+      #current-weather img {
+        width: 60px;
+        height: 60px;
+        margin-right: 10px;
+        animation: float 2s infinite;
+      }
+      #temperature {
+        font-size: 2em;
+        font-weight: bold;
+      }
+      #description {
+        text-transform: capitalize;
+        font-size: 1em;
+        margin: 2px 0;
+      }
+      #minmax {
+        font-size: 0.85em;
+        margin-top: 3px;
+      }
+
+      #minmax {
+        font-size: 0.85em;
+        margin-top: 3px;
+      }
+
+      #forecast {
+        margin-top: 30px;
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+      }
+
+      .day {
+        text-align: center;
+        font-size: 1em;
+        color: white;
+      }
+
+      .day img {
+        width: 50px;
+        height: 50px;
+        margin-bottom: 5px;
+      }
+
+      .day div {
+        font-size: 0.95em;
+        color: white;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-5px);
+        }
+      }
+
+      #weather-widget.night {
+        background: linear-gradient(to bottom, #1a1a2e, #2b2b44);
+        color: #f0f4f8;
       }
     </style>
   </head>
   <body>
-   <div id="pdf-viewer">
-    <embed 
+    <div
+      id="kalendar"
+      style="left: 0; width: 60%; position: relative; margin-bottom: 60%"
+    >
+      <iframe
+        src="https://calendar.google.com/calendar/embed?src=iframely.embeds%40gmail.com"
+        allowfullscreen
+      ></iframe>
+    </div>
+    <header id="index-header">
+      <nav>
+        <div class="nav-logo">
+          <a href="#"><img src="assets/logo.png" alt="Logo" id="nav-img" /></a>
+        </div>
+        <div class="nav-links-center">
+          <a href="index.html#index-home">Home</a>
+          <a href="index.html#index-sport" id="sport-nav-link">Sport</a>
+          <a href="index.html#index-general">Explore</a>
+        </div>
+      </nav>
+    </header>
+    <div id="pdf-viewer">
+      <embed
         src="./assets/pdfs/10K/10K_12_easy.pdf#toolbar=0&navpanes=0"
         type="application/pdf"
+        id="pdf"
         width="100%"
-        height="100%">
-</div>
-
-
-
+        height="100%"
+      />
+    </div>
     <div id="map"></div>
-
+    <div id="weather-widget">
+      <div id="location">Učitavanje...</div>
+      <div id="datetime"></div>
+      <div id="current-weather">
+        <img id="icon" src="" alt="Weather Icon" />
+        <div>
+          <div id="temperature"></div>
+          <div id="description"></div>
+          <div id="minmax"></div>
+        </div>
+      </div>
+      <div id="forecast"></div>
+    </div>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
       const map = L.map("map").setView([45.8, 16.0], 13);
@@ -61,35 +269,22 @@
       }).addTo(map);
 
       function fetchSportsData(lat, lon) {
-        const query = `
-                [out:json];
-                (
-                  node["sport"](around:30000,${lat},${lon});
-                  way["sport"](around:30000,${lat},${lon});
-                  relation["sport"](around:30000,${lat},${lon});
-                );
-                out center;
-            `;
+        const query = `[out:json];(node["sport"](around:30000,${lat},${lon});way["sport"](around:30000,${lat},${lon});relation["sport"](around:30000,${lat},${lon}););out center;`;
         const url =
           "https://overpass-api.de/api/interpreter?data=" +
           encodeURIComponent(query);
-
         fetch(url)
-          .then((response) => response.json())
+          .then((res) => res.json())
           .then((data) => {
             data.elements.forEach((el) => {
               let coords;
-              if (el.type === "node") {
-                coords = [el.lat, el.lon];
-              } else if (el.type === "way" || el.type === "relation") {
+              if (el.type === "node") coords = [el.lat, el.lon];
+              else if (el.type === "way" || el.type === "relation")
                 coords = [el.center.lat, el.center.lon];
-              }
-              if (coords) {
+              if (coords)
                 L.marker(coords)
                   .addTo(map)
-                  .bindPopup(el.tags.name || "Sportski objekt")
-                  .openPopup();
-              }
+                  .bindPopup(el.tags.name || "Sportski objekt");
             });
           })
           .catch((err) =>
@@ -97,36 +292,93 @@
           );
       }
 
+      const weatherApiKey = "76c3274616114882a35174718261601";
+
+      function showWeather(data) {
+        const now = new Date(data.location.localtime);
+        document.getElementById("location").innerText = data.location.name;
+        document.getElementById("datetime").innerText = now.toLocaleString(
+          "en-US",
+          {
+            weekday: "short",
+            day: "numeric",
+            month: "short",
+            hour: "2-digit",
+            minute: "2-digit",
+          }
+        );
+        document.getElementById("icon").src =
+          "https:" + data.current.condition.icon;
+        document.getElementById("temperature").innerText =
+          Math.round(data.current.temp_c) + "°C";
+        document.getElementById("description").innerText =
+          data.current.condition.text;
+        document.getElementById("minmax").innerText =
+          "Min: " +
+          Math.round(data.forecast.forecastday[0].day.mintemp_c) +
+          "°C Max: " +
+          Math.round(data.forecast.forecastday[0].day.maxtemp_c) +
+          "°C";
+
+        const forecastDiv = document.getElementById("forecast");
+        forecastDiv.innerHTML = "";
+        data.forecast.forecastday.forEach((day) => {
+          const dayName = new Date(day.date).toLocaleDateString("en-US", {
+            weekday: "short",
+          });
+          const icon = "https:" + day.day.condition.icon;
+          const temp = Math.round(day.day.avgtemp_c) + "°C";
+          forecastDiv.innerHTML += `<div class="day">
+          <div>${dayName}</div>
+          <img src="${icon}">
+          <div>${temp}</div>
+        </div>`;
+        });
+      }
+
+      function fetchWeather(lat, lon) {
+        fetch(
+          `https://api.weatherapi.com/v1/forecast.json?key=${weatherApiKey}&q=${lat.toFixed(
+            6
+          )},${lon.toFixed(6)}&days=3&aqi=no&alerts=no`
+        )
+          .then((res) => res.json())
+          .then(showWeather)
+          .catch((err) => console.error("Greška u vremenskom API:", err));
+      }
+
+      function fetchWeatherByCity(city) {
+        fetch(
+          `https://api.weatherapi.com/v1/forecast.json?key=${weatherApiKey}&q=${city}&days=3&aqi=no&alerts=no`
+        )
+          .then((res) => res.json())
+          .then(showWeather)
+          .catch((err) => console.error("Greška u vremenskom API:", err));
+      }
+
       function locateUser() {
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(
-            (position) => {
-              const lat = position.coords.latitude;
-              const lon = position.coords.longitude;
-
-              const userMarker = L.marker([lat, lon])
+            (pos) => {
+              const lat = pos.coords.latitude;
+              const lon = pos.coords.longitude;
+              L.marker([lat, lon])
                 .addTo(map)
                 .bindPopup("<b>Tvoja lokacija</b>")
                 .openPopup();
-
               map.setView([lat, lon], 12);
-
               L.circle([lat, lon], {
                 color: "blue",
                 fillColor: "#blue",
                 fillOpacity: 0.1,
                 radius: 30000,
               }).addTo(map);
-
               fetchSportsData(lat, lon);
+              fetchWeather(lat, lon);
             },
-            () => {
-              alert("Ne možemo dohvatiti tvoju lokaciju.");
-            }
+            () => fetchWeatherByCity("Belgrade")
           );
-        } else {
-          alert("Geolokacija nije podržana u ovom pregledniku.");
-        }
+        } else fetchWeatherByCity("Belgrade");
       }
 
       locateUser();

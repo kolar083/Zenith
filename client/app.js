@@ -145,94 +145,96 @@ document.getElementById("planForm").addEventListener("submit", function (e) {
     case "Marathon":
       if (I <= 5.5) {
         if (W == 12){
-            
+            document.getElementById("pdf").src="./assets/pdfs/Marathon/Marathon_12_hard.pdf#toolbar=0&navpanes=0"
         };
         if (W == 16){
-
+            document.getElementById("pdf").src="./assets/pdfs/Marathon/Marathon_16_hard.pdf#toolbar=0&navpanes=0"
         };
         if (W == 20){
-
+          document.getElementById("pdf").src="./assets/pdfs/Marathon/Marathon_20_hard.pdf#toolbar=0&navpanes=0"
         };
       } else if (I > 5.5) {
         if (W == 12){
-
+          document.getElementById("pdf").src="./assets/pdfs/Marathon/Marathon_12_easy.pdf#toolbar=0&navpanes=0"
         };
         if (W == 16){
-
+          document.getElementById("pdf").src="./assets/pdfs/Marathon/Marathon_16_easy.pdf#toolbar=0&navpanes=0"
         };
         if (W == 20){
-
+          document.getElementById("pdf").src="./assets/pdfs/Marathon/Marathon_20_easy.pdf#toolbar=0&navpanes=0"
         };
       }
       break;
     case "HalfMarathon":
       if (I <= 5.5) {
         if (W == 12){
-
+            document.getElementById("pdf").src="./assets/pdfs/HalfMarathon/HalfMarathon_12_hard.pdf#toolbar=0&navpanes=0"
         };
         if (W == 16){
-
+            document.getElementById("pdf").src="./assets/pdfs/HalfMarathon/HalfMarathon_16_hard.pdf#toolbar=0&navpanes=0"
         };
         if (W == 20){
-
+            document.getElementById("pdf").src="./assets/pdfs/HalfMarathon/HalfMarathon_20_hard.pdf#toolbar=0&navpanes=0"
         };
       } else if (I > 5.5) {
         if (W == 12){
-
+            document.getElementById("pdf").src="./assets/pdfs/HalfMarathon/HalfMarathon_12_easy.pdf#toolbar=0&navpanes=0"
         };
         if (W == 16){
-
+            document.getElementById("pdf").src="./assets/pdfs/HalfMarathon/HalfMarathon_16_easy.pdf#toolbar=0&navpanes=0"
         };
         if (W == 20){
-
+            document.getElementById("pdf").src="./assets/pdfs/HalfMarathon/HalfMarathon_20_easy.pdf#toolbar=0&navpanes=0"
         };
       }
       break;
     case "TenK":
       if (I <= 5.5) {
         if (W == 12){
-
+          document.getElementById("pdf").src="./assets/pdfs/10K/10K_12_hard.pdf#toolbar=0&navpanes=0"
         };
         if (W == 16){
-
+          document.getElementById("pdf").src="./assets/pdfs/10K/10K_16_hard.pdf#toolbar=0&navpanes=0"
         };
         if (W == 20){
-
+          document.getElementById("pdf").src="./assets/pdfs/10K/10K_20_hard.pdf#toolbar=0&navpanes=0"
         };
       } else if (I > 5.5) {
         if (W == 12){
-
+          document.getElementById("pdf").src="./assets/pdfs/10K/10K_12_easy.pdf#toolbar=0&navpanes=0"
         };
         if (W == 16){
-
+          document.getElementById("pdf").src="./assets/pdfs/10K/10K_16_easy.pdf#toolbar=0&navpanes=0"
         };
         if (W == 20){
-
+          document.getElementById("pdf").src="./assets/pdfs/10K/10K_20_easy.pdf#toolbar=0&navpanes=0"
         };
       }
       break;
     case "Triathlon":
       if (I <= 5.5) {
         if (W == 12){
-
+            document.getElementById("pdf").src="./assets/pdfs/Triathlon/Triathlon_12_hard.pdf#toolbar=0&navpanes=0"
         };
         if (W == 16){
-
+            document.getElementById("pdf").src="./assets/pdfs/Triathlon/Triathlon_16_hard.pdf#toolbar=0&navpanes=0"
         };
         if (W == 20){
-
+          document.getElementById("pdf").src="./assets/pdfs/Triathlon/Triathlon_20_hard.pdf#toolbar=0&navpanes=0"
         };
       } else if (I > 5.5) {
         if (W == 12){
-
+          document.getElementById("pdf").src="./assets/pdfs/Triathlon/Triathlon_12_easy.pdf#toolbar=0&navpanes=0"
         };
         if (W == 16){
-
+          document.getElementById("pdf").src="./assets/pdfs/Triathlon/Triathlon_16_easy.pdf#toolbar=0&navpanes=0"
         };
         if (W == 20){
-
+            document.getElementById("pdf").src="./assets/pdfs/Triathlon/Triathlon_20_easy.pdf#toolbar=0&navpanes=0"
         };
       }
       break;
   }
+  document.getElementById("myModal").style.display = "none";
+  window.location.href = "Plan.html";
 });
